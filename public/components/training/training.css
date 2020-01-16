@@ -1,0 +1,285 @@
+.jumbotron > .mlprojectdescription {
+    font-size: 1.9em;
+    text-align: center;
+    padding-top: 0;
+    line-height: 1.7em;
+}
+.jumbotron.training {
+    margin-bottom: 0;
+}
+
+.trainingbuckets {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    height: calc(100vh - 230px);
+    min-height: 200px;
+}
+
+.trainingbucket {
+    flex: 1;
+    flex-grow: 1;
+
+    border: 0.8em #777777 solid;
+    border-radius: 2em;
+    margin: 1em;
+    min-width: 25em;
+    max-width: 47%;
+    max-height: calc(100% - 25px);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+@media (max-width: 770px) {
+    .trainingbucket {
+        max-width: 94%;
+    }
+}
+
+@media (max-width: 550px) {
+    .trainingbuckets {
+        height: initial;
+        background-color: white;
+    }
+    .trainingbuckets, .trainingbucket {
+        display: block;
+    }
+    .trainingbucket {
+        margin-top: 4rem;
+        max-height: initial;
+    }
+}
+
+.loadingtraining {
+    background-image: url('./../../static/images/loading.gif');
+    background-repeat: no-repeat;
+    background-size: 150px 150px;
+    width: 150px;
+    height: 150px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2em;
+}
+
+.trainingbucketheader {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    height: 1em;
+}
+.trainingbucketlabel {
+    text-align: center;
+    font-size: 2.5em;
+    font-weight: bold;
+    color: darkgreen;
+    position: relative;
+    top: -1em;
+    background-color: white;
+    width: 90%;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.trainingbucketitems {
+    padding: 0.8em;
+    overflow-y: scroll;
+    margin-bottom: 0.4em;
+    flex: 1;
+}
+.trainingbucketitems.hover {
+    border: thick dashed #00008b;
+}
+.trainingbucketitem {
+    background-color: #e0e0e0;
+    margin: 0.5em;
+    padding: 0.5em 0.7em;
+    font-size: 1.2em;
+    float: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 95%;
+}
+
+@media(min-width: 460px) {
+    .newtrainingdatadialog .trainingtextinput {
+        min-width: 480px;
+    }
+}
+
+@media(max-width: 460px) {
+    md-dialog.newtrainingdatadialog {
+        max-width: 100%;
+        width: 100%;
+    }
+    .newtrainingdatadialog .trainingtextinput {
+        max-width: 100%;
+        width: 100%;
+    }
+    .newtrainingdatadialog .trainingtextinput input {
+        width: 100%;
+    }
+}
+
+
+.dragprompt {
+    color: #808080;
+    font-size: 1.6em;
+    text-align: center;
+}
+.hover > .dragprompt {
+    display: none;
+}
+
+
+.newexamplebutton {
+    clear: both;
+    border: 1px solid #ddd;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-radius: 5px;
+    padding: 3px;
+    outline: none !important;
+}
+
+.newlabelbuttons {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-right: 5em;
+}
+
+.newlabelbutton {
+    border: 1px solid #ddd;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-radius: 5px;
+    padding: 3px;
+    outline: none;
+    margin-bottom: 11px;
+}
+
+.newlabelicon {
+    font-size: 3em;
+    font-weight: bold;
+    float: left;
+    margin-top: 0;
+    padding-top: 0;
+    line-height: 30px;
+    margin-right: 10px;
+}
+.newlabellabel {
+    float: right;
+    width: 70px;
+}
+.newexampleicon {
+    font-size: 2.6em;
+    font-weight: bold;
+    float: left;
+    margin-top: -5px;
+    padding-top: 0;
+    line-height: 30px;
+    margin-right: 10px;
+}
+.newexamplelabel {
+    float: right;
+    padding-right: 5px;
+    padding-top: 4px;
+}
+
+.trainingbucket .deletelabel {
+    display: none;
+}
+.trainingbucket:hover .deletelabel {
+    display: inline;
+}
+
+.deletelabel {
+    font-size: 2em;
+    background-color: white;
+    border-radius: 1em;
+    color: #CC8080;
+    cursor: pointer;
+    position: absolute;
+    top: -0.8em;
+    right: 0;
+}
+
+.trainingcountlabel {
+    font-size: 1.7em;
+    background-color: white;
+    border-radius: 1em;
+    border: thin #006400 solid;
+    color: #006400;
+    position: absolute;
+    bottom: -0.8em;
+    right: -0.8em;
+    min-width: 1.6em;
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+    text-align: center;
+}
+
+
+.trainingbucketitem.placeholder,
+.trainingbucketitem.placeholder .numberdatalabel,
+.trainingbucketitem.placeholder .numberdatavalue {
+    color: #808080;
+    background-color: #f1f1fb;
+}
+
+.trainingbucketitem .deletetext {
+    visibility: hidden;
+}
+
+.trainingbucketitem:hover .deletetext {
+    visibility: visible;
+}
+
+
+.trainingImageThumbnail {
+    max-width: 100px;
+}
+
+.trainingbucketitem.error {
+    background-color: #d9534f;
+}
+
+
+.deletetext {
+    color: #CC8080;
+    font-size: smaller;
+    cursor: pointer;
+    float: right;
+    padding: 0.35em 0 0 0.35em;
+}
+
+.trainingbucketitem.error > .deletetext {
+    color: white;
+    font-weight: bold;
+    visibility: visible;
+    font-size: large;
+}
+
+
+.numberdatalabel {
+    text-align: right;
+    font-size: 0.7em;
+}
+.numberdatavalue {
+    padding-left: 10px;
+    font-size: 0.9em;
+}
+
+
+
+video.webcam-live {
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
+.webcamerror {
+    max-width: 500px;
+    font-size: 1.2em;
+    padding: 1em;
+}

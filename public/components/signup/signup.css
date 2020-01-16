@@ -1,0 +1,17 @@
+.signupPage {
+    display: flex;
+}
+
+.signupForm {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.signupForm .well.terms {
+    font-size: 0.9em;
+}
+
+.signuptextentry {
+    font-size: 1.2em;
+}

@@ -1,0 +1,64 @@
+.studentslist.wide {
+    width: 95%;
+    min-width: 95%;
+}
+
+.studentslist.wide tr:hover {
+    background-color: #c9c9e1;
+}
+
+.studentslistdetail .mlprojectcrowd {
+    background-color: white;
+    background-size: contain;
+    background-image: url('./../../static/images/group.png');
+}
+
+.studentslist .projectslistname {
+    font-size: 1.15em;
+    font-weight: bold;
+}
+
+.studentslist .projecttype {
+    color: darkblue;
+    font-weight: bold;
+    margin-left: 0.3em;
+    margin-right: 0.3em;
+    font-size: 1em;
+}
+
+.miniwatsonicon {
+    height: 23px;
+    width: 23px;
+    border: 1px #333 solid;
+}
+
+.mediumwatsonicon {
+    height: 38px;
+    width: 38px;
+    border: 1px #333 solid;
+}
+
+.unmanagedClassifiers {
+    background-color: #f5d0d0;
+    border: thin grey solid;
+    padding: 1em;
+    margin-bottom: 2em;
+}
+.unmanagedClassifiers .warningHeading {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 0.7em;
+}
+.unmanagedClassifiers .warningSubHeading {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin: 1em;
+    color: #333;
+}
+.unmanagedClassifiers .warningExplanation {
+    margin: 1em;
+}
+
+.unmanagedClassifiersTable td {
+    padding-bottom: 5px;
+}

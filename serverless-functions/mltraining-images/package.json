@@ -1,0 +1,37 @@
+{
+  "name": "machinelearningforkids-functions",
+  "description": "IBM Cloud Functions for Machine Learning for Kids",
+  "scripts": {
+    "build": "tsc",
+    "bundle": "webpack --config webpack.config.js",
+    "deploy": "ibmcloud fn deploy -m manifest.yaml",
+    "push": "npm run build && npm run bundle && npm run deploy",
+    "test": "LOGGING=off mocha --no-timeouts -r ts-node/register test/*.ts"
+  },
+  "author": "dale.lane@uk.ibm.com",
+  "devDependencies": {
+    "@types/async": "2.4.2",
+    "@types/node": "^10",
+    "@types/request": "2.48.3",
+    "@types/swagger-schema-official": "2.0.20",
+    "filecompare": "1.0.4",
+    "mocha": "6.2.2",
+    "ts-loader": "6.2.1",
+    "ts-node": "8.5.2",
+    "typescript": "3.7.2",
+    "unzipper": "^0.10.5",
+    "webpack": "4.41.2",
+    "webpack-cli": "3.3.10"
+  },
+  "dependencies": {
+    "archiver": "3.1.1",
+    "async": "2.6.3",
+    "file-type": "12.4.0",
+    "gm": "1.23.1",
+    "ibm-cos-sdk": "1.5.4",
+    "openwhisk": "3.20.0",
+    "read-chunk": "3.2.0",
+    "request": "2.88.0",
+    "tmp": "0.1.0"
+  }
+}

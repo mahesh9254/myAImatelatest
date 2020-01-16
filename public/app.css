@@ -1,0 +1,47 @@
+.jumbotron {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.pageheadermsg {
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+.loading {
+    background-image: url('images/loading.gif');
+    background-repeat: no-repeat;
+    background-size: 200px 200px;
+    width: 200px;
+    height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2em;
+}
+
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+}
+
+.backbutton {
+    margin-left: 5px;
+}
+
+/* override for angular material speed which feels too slow */
+md-dialog.md-transition-in,md-dialog.md-transition-out {
+    transition-duration: 0.2s !important;
+}
+
+.sitealert {
+    margin: 0;
+}
+.sitealert > .alert {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin: 0;
+}
+.sitealert a {
+    padding-left: 2em;
+}

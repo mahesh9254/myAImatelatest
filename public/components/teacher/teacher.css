@@ -1,0 +1,13 @@
+.adminpage {
+    padding-left: 2em;
+    padding-right: 2em;
+}
+
+.mlprojectmenu.warningmenu {
+    background-color: #f9e0e0;
+}
+
+.md-dialog-content .confirmdialogsmall {
+    max-width: 400px;
+    margin-bottom: 1em;
+}

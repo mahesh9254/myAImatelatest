@@ -1,0 +1,172 @@
+@media(min-width: 450px) {
+    .modelguidancecontainer {
+        margin: 1em auto 2em auto;
+        width: 90%;
+    }
+}
+@media(max-width: 450px) {
+    .modelguidancecontainer {
+        margin: 1em 0 2em 0;
+        width: 100%;
+    }
+}
+
+.modelguidancecontainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.modelguidance {
+    flex: 1;
+    background-color: #eeeeee;
+    border-radius: 2em;
+    width: 40%;
+    margin: 1% 1% 1em 1%;
+    padding: 2em;
+    position: relative;
+    min-width: 360px;
+}
+
+.modelstatusheading {
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+.modelstatusdetail {
+    font-size: 1.2em;
+    padding-bottom: 1em;
+}
+
+
+.quizSection {
+    margin-bottom: 2em;
+    padding: 2em;
+}
+
+.modelinfo {
+    margin: 2em;
+}
+
+.modelinfo td {
+    padding: 0.1em 0.6em;
+}
+
+
+.trainingserversection {
+    border: thin black solid;
+}
+
+@media(min-width: 500px) {
+    .trainingserversection {
+        margin: 2em 6em 6em 6em;
+    }
+}
+@media(max-width: 500px) {
+    .trainingserversection {
+        margin: 2em 1em 6em 1em;
+    }
+}
+
+
+.quizintro {
+    font-size: 1.3em;
+    margin: 1em;
+}
+
+@media(min-width: 500px) {
+    .quiz {
+        margin: 0 4em;
+    }
+}
+@media(max-width: 500px) {
+    .quiz {
+        margin: 0;
+    }
+}
+
+.quiz {
+    border: thin grey solid;
+    padding: 1em;
+}
+
+.quizquestion {
+    font-weight: bold;
+    font-size: 1.15em;
+    margin-bottom: 1em;
+}
+
+.quizanswer {
+    margin: 1.5em;
+
+    content: "";
+    clear: both;
+    display: table;
+    width: 90%;
+}
+
+.quizanswer input[type='checkbox'] {
+    width: 30px;
+    height: 30px;
+    background: white;
+    border-radius: 5px;
+    border: 2px solid #555;
+    vertical-align: top;
+    margin-right: 1em;
+    float: left;
+    cursor: pointer;
+
+    -moz-appearance: none;
+    -ms-progress-appearance: none;
+    -webkit-appearance: none;
+}
+
+
+.quizanswer input[type='checkbox']:checked {
+    background-image: url('./../../static/images/tick.png');
+}
+
+.quizanswer.answered input[type='checkbox']:checked {
+    background: darkgreen;
+    background-image: url('./../../static/images/tick-confirm.png');
+}
+
+.answerconfirm {
+    font-weight: bold;
+    margin-top: 2em;
+    margin-bottom: 1em;
+}
+
+.answernotes {
+    margin: 0.5em 2em 1em 2em;
+}
+
+.md-dialog-container .errdetail {
+    padding-bottom: 1em;
+}
+
+.md-dialog-container .errdetail.wraplongurls {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    word-break: break-all;
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+    font-size: 0.65em;
+    color: darkslateblue;
+}
+
+
+.tooltipBody {
+    height: auto !important;
+    width: auto !important;
+    white-space: inherit !important;
+    font-size: 1em !important;
+    opacity: 1!important;
+    padding: 1em;
+}

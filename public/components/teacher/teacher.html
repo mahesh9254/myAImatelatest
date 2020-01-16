@@ -1,0 +1,84 @@
+<div class="jumbotron">
+    <h2 class="text-center" translate="TEACHER.MENU.TITLE"></h2>
+</div>
+<div ng-if="!isAuthenticated">
+    <div class="alert alert-warning pageheadermsg">
+        <strong translate="ERRORS.NOTLOGGEDIN"></strong>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary" ng-click="vm.authService.login()" translate="APP.LOGIN"></button>
+    </div>
+</div>
+<div ng-if="isAuthenticated && vm.profile.role === 'supervisor'" class="adminpage">
+
+    <div class="menucontainer">
+        <div class="mlprojectmenu">
+            <div class="mlprojectmenutitle" translate="TEACHER.MENU.RESTRICTIONS.TITLE"></div>
+            <div class="mlprojectmenudescription" translate="TEACHER.MENU.RESTRICTIONS.DESCRIPTION"></div>
+            <div class="mlprojectmenubutton">
+                <button type="button" class="btn btn-primary" ui-sref="teacher_restrictions" ng-disabled="vm.busy" translate="TEACHER.MENU.RESTRICTIONS.TITLE"></button>
+            </div>
+        </div>
+        <div class="mlprojectmenu"
+            ng-if="vm.policy && (vm.policy.isManaged === false)"
+            ng-class="{ 'warningmenu' : vm.policy && vm.policy.missingCredentials }">
+            <div class="mlprojectmenutitle" translate="TEACHER.MENU.APIKEYS.TITLE"></div>
+            <div class="mlprojectmenudescription">
+                <div ng-if="vm.policy && vm.policy.missingCredentials">
+                    <span class="glyphicon glyphicon-warning-sign"> </span> <strong translate="APP.INCOMPLETE"></strong>
+                </div>
+                <span translate="TEACHER.MENU.APIKEYS.DESCRIPTION"></span>
+            </div>
+            <div class="mlprojectmenubutton">
+                <button type="button" class="btn btn-primary" ui-sref="teacher_apikeys" ng-disabled="vm.busy" translate="TEACHER.MENU.APIKEYS.TITLELONG"></button>
+            </div>
+        </div>
+        <div class="mlprojectmenu">
+            <div class="mlprojectmenutitle" translate="TEACHER.MENU.STUDENTS.TITLE"></div>
+            <div class="mlprojectmenudescription" translate="TEACHER.MENU.STUDENTS.DESCRIPTION"></div>
+            <div class="mlprojectmenubutton">
+                <button type="button" class="btn btn-primary" ui-sref="teacher_students" ng-disabled="vm.busy" translate="TEACHER.MENU.STUDENTS.TITLELONG"></button>
+            </div>
+        </div>
+        <div class="mlprojectmenu">
+            <div class="mlprojectmenutitle" translate="TEACHER.MENU.SUPERVISION.TITLE"></div>
+            <div class="mlprojectmenudescription" translate="TEACHER.MENU.SUPERVISION.DESCRIPTION"></div>
+            <div class="mlprojectmenubutton">
+                <button type="button" class="btn btn-primary" ui-sref="teacher_supervision" ng-disabled="vm.busy" translate="TEACHER.MENU.SUPERVISION.TITLE"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="advanced">
+        <div ng-init="advancedClosed = true" ng-click="advancedClosed = !advancedClosed" class="advancedMenu">
+            <span class="glyphicon" ng-class="{ 'glyphicon-chevron-right' : advancedClosed, 'glyphicon-chevron-down' : !advancedClosed }"> </span>
+            <span translate="TEACHER.MENU.ADVANCEDOPTIONS"></span>
+        </div>
+        <div ng-class="{ collapsed : advancedClosed, expanded : !advancedClosed }" class="collapsable">
+            <div class="menucontainer" >
+                <div class="mlprojectmenu warningmenu">
+                    <div class="mlprojectmenutitle" translate="TEACHER.MENU.CANYOUHELP.TITLE"></div>
+                    <div class="mlprojectmenudescription" translate="TEACHER.MENU.CANYOUHELP.DESCRIPTION"></div>
+                    <div class="mlprojectmenubutton">
+                        <a class="btn btn-primary" style="width: 240px;"
+                           translate="TEACHER.MENU.CANYOUHELP.TITLE" target="_blank"
+                           href="https://github.com/IBM/taxinomitis/wiki/Input-from-teachers-and-group-leaders"></a>
+                    </div>
+                </div>
+                <div class="mlprojectmenu warningmenu">
+                    <div class="mlprojectmenutitle" translate="TEACHER.MENU.DELETECLASS.TITLE"></div>
+                    <div class="mlprojectmenudescription" translate="TEACHER.MENU.DELETECLASS.DESCRIPTION"></div>
+                    <div class="mlprojectmenubutton" ng-hide="vm.busy">
+                        <button type="button" class="btn btn-danger" ng-click="vm.deleteClass($event)" ng-disabled="vm.busy" translate="TEACHER.MENU.DELETECLASS.TITLE"></button>
+                    </div>
+                    <md-progress-circular style="margin-left: auto; margin-right: auto;" ng-if="vm.busy" md-mode="indeterminate"></md-progress-circular>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div ng-if="isAuthenticated && vm.profile.role !== 'supervisor'" class="alert alert-danger pageheadermsg">
+    <strong translate="APP.ERROR"></strong> <span translate="TEACHER.MENU.NOTAUTHORISED"></span>
+</div>

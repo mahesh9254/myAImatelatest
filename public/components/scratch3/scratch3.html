@@ -1,0 +1,144 @@
+<div ng-if="!isAuthenticated">
+    <div class="alert alert-warning pageheadermsg">
+        <strong translate="ERRORS.NOTLOGGEDIN"></strong>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary" ng-click="vm.authService.login()" translate="APP.LOGIN"></button>
+    </div>
+</div>
+
+<div ng-if="isAuthenticated && !projectId" class="alert alert-danger pageheadermsg">
+    <strong translate="APP.ERROR">Error:</strong> <span translate="ERRORS.MISSINGPROJECTID"></span> <a ui-sref="projects" translate="APP.PROJECTS"></a>
+</div>
+
+<div ng-if="failure" class="alert alert-danger pageheadermsg" role="alert">
+    <strong translate="APP.ERROR"></strong> {{ failure.message }}<br/>
+    <em ng-if="failure.status >= 500"><span translate="ERRORS.IFPERSISTENT"></span> <a ui-sref="help" translate="ERRORS.LETMEKNOW"></a></em>
+</div>
+
+
+<div ng-if="isAuthenticated && projectId">
+    <div class="jumbotron">
+        <h2 class="text-center" translate="SCRATCH3.TITLE"></h2>
+    </div>
+    <div class="backbutton">
+        <a ui-sref="mlproject({ projectId : projectId, userId : userId  })" translate="APP.BACKTOPROJECT"></a>
+    </div>
+
+    <!-- ------------------------------------- -->
+    <!--  page state :   LOADING               -->
+    <!--                                       -->
+    <!-- waiting to get info about the project -->
+    <!-- ------------------------------------- -->
+    <div ng-if="projectId && !project && !scratchkey" class="loading"> </div>
+
+
+    <!-- ------------------------------------- -->
+    <!--  page state :   ONE LABEL             -->
+    <!--                                       -->
+    <!-- there is only one training bucket so  -->
+    <!--  we can't do anything until we have   -->
+    <!--  at least one more                    -->
+    <!-- ------------------------------------- -->
+    <div ng-if="project && project.labels.length <= 1" class="modelguidancecontainer">
+        <div class="modelguidance">
+            <div class="modelstatusdetail" translate="SCRATCH.NOTREADY"></div>
+            <div class="modelstatusdetail" translate="SCRATCH.LAUNCH_SCRATCH_BY_ITSELF" translate-values='{ "url" : "/scratch3" }'></div>
+            <div class="modelstatusdetail" translate="SCRATCH.GO_TO_LEARNANDTEST" translate-values='{ urls : projecturls }'></div>
+        </div>
+    </div>
+
+
+    <div ng-if="scratchkey && project && project.labels.length > 1"
+         style="margin: 2em;">
+        <!-- ------------------------------------- -->
+        <!--  page state :   NO MODEL              -->
+        <!--                                       -->
+        <!-- no model but we could use Scratch to  -->
+        <!--  create one                           -->
+        <!-- ------------------------------------- -->
+        <div ng-if="!scratchkey.model">
+            <div class="alert alert-info" role="alert" translate="SCRATCH.NOMODEL"></div>
+            <div>
+                You can <strong><a href="" ui-sref="mlproject_models({ projectId : projectId, userId : userId })">train one now</a></strong> and then come back to open Scratch.
+            </div>
+            <div>
+                Or you can go <a class="btn btn-default" target="_blank" href="/scratch3?url={{ scratchkey.extensionurl }}">straight into Scratch</a> now.
+            </div>
+        </div>
+
+        <!-- ------------------------------------- -->
+        <!--  page state :   MODEL                 -->
+        <!--                                       -->
+        <!-- machine learning model is ready to go -->
+        <!-- ------------------------------------- -->
+        <div ng-if="scratchkey.model">
+            <a target="_blank" class="btn btn-primary"
+               href="/scratch3?url={{ scratchkey.extensionurl }}"
+               translate="SCRATCH3.LAUNCH"></a>
+        </div>
+    </div>
+
+
+    <div ng-if="project && project.labels.length > 1" class="modelguidancecontainer">
+        <div class="modelguidance scratchblockscontainer" ng-hide="project.type === 'sounds'">
+            <div class="modelstatusdetail" translate="SCRATCH.MORE_BLOCKS_3"></div>
+            <br/>
+            <div>
+                <img src="static/images/scratch3-recognise-label-{{ project.type }}.png">
+            </div>
+            <div class="modelstatusdetail" translate="SCRATCH.EXPLAIN_RECOGNISE_LABEL" translate-values='{ "type" : project.type }'></div>
+            <div>
+                <img src="static/images/scratch3-recognise-confidence-{{ project.type }}.png">
+            </div>
+            <div class="modelstatusdetail" translate="SCRATCH.EXPLAIN_RECOGNISE_CONFIDENCE" translate-values='{ "type" : project.type }'></div>
+            <div>
+                <img src="static/images/scratch3-label.png">
+            </div>
+            <div class="modelstatusdetail" translate="SCRATCH.EXPLAIN_LABELS" translate-values='{ "type" : project.type }'></div>
+            <div class="modelstatusdetail"><strong translate="SCRATCH.SAMPLE_SCRIPT"></strong></div>
+            <div>
+                <img src="static/images/scratch3-sample-{{ project.type }}.png">
+            </div>
+            <div style="padding: 0; margin: 10px 0 0 0" ng-hide="project.type === 'images'">
+                <hr style="border-top: 1px solid #999999"/><br/>
+                <div ng-if="project.type === 'text'">
+                    <img src="static/images/scratch3-addtraining-text.png">
+                </div>
+                <div ng-if="project.type === 'text'" class="modelstatusdetail" translate="SCRATCH.EXPLAIN_ADD_TRAINING"></div>
+                <div>
+                    <img src="static/images/scratch3-train-model.png">
+                </div>
+                <div class="modelstatusdetail" translate="SCRATCH.EXPLAIN_TRAIN_MODEL"></div>
+                <div>
+                    <img src="static/images/scratch3-wait-until-model-ready.png">
+                </div>
+                <div class="modelstatusdetail" translate="SCRATCH.EXPLAIN_IS_MODEL_READY"></div>
+            </div>
+        </div>
+        <div class="modelguidance scratchblockscontainer" ng-if="project.type === 'sounds'">
+            <div class="modelstatusdetail" translate="SCRATCH.MORE_BLOCKS_3"></div>
+            <br/>
+            <div>
+                <img src="static/images/scratch3-train-model.png">
+            </div>
+            <div class="modelstatusdetail">Use this first to train a machine learning model for use in Scratch.</div>
+            <div>
+                <img src="static/images/scratch3-wait-until-model-ready.png">
+            </div>
+            <div class="modelstatusdetail">The machine learning model will take a minute before it's ready for use. You can use these blocks to wait until it is ready.</div>
+            <div>
+                <img src="static/images/scratch3-sound-startlistening.png">
+            </div>
+            <div class="modelstatusdetail">Once the machine learning model is ready, you can use this to start listening for sounds that your machine learning model can recognize.</div>
+        </div>
+        <div class="modelguidance">
+            <div class="modelstatusdetail" translate="SCRATCH.SAMPLE_SCREENSHOT"></div>
+            <div class="modelstatusdetail">
+                <img src="static/images/scratch3-blocks-screenshot.jpg">
+            </div>
+        </div>
+    </div>
+
+</div>
+
