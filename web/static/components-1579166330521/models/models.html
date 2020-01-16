@@ -1,0 +1,484 @@
+<div ng-if="!isAuthenticated">
+    <div class="alert alert-warning pageheadermsg">
+        <strong translate="ERRORS.NOTLOGGEDIN"></strong>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary" ng-click="vm.authService.login()" translate="APP.LOGIN"></button>
+    </div>
+</div>
+<div ng-if="isAuthenticated && !projectId" class="alert alert-danger pageheadermsg">
+    <strong translate="APP.ERROR"></strong> <span translate="ERRORS.MISSINGPROJECTID"></span> <a ui-sref="projects" translate="APP.PROJECTS"></a>
+</div>
+<div ng-if="isAuthenticated && projectId">
+    <div class="jumbotron">
+        <h2 class="text-center" translate="MODELS.TITLE"></h2>
+    </div>
+    <div class="backbutton">
+        <a ui-sref="mlproject({ projectId : projectId, userId : userId })" translate="APP.BACKTOPROJECT"></a>
+    </div>
+
+    <div ng-repeat="error in vm.errors"
+         class="alert alert-danger alert-dismissible pageheadermsg" role="alert"
+         ng-click="vm.dismissAlert('errors', $index)"
+         id="errors{{error.alertid}}">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong translate="APP.ERROR"></strong> {{ error.message }}<br/>
+        <em ng-if="error.status >= 500"><span translate="ERRORS.IFPERSISTENT"></span> <a ui-sref="help" translate="ERRORS.LETMEKNOW"></a></em>
+    </div>
+    <div ng-repeat="warning in vm.warnings" class="alert alert-warning alert-dismissible pageheadermsg" role="alert" ng-click="vm.dismissAlert('warnings', $index)">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong translate="APP.WARNING"></strong> {{ warning.message }}
+    </div>
+
+
+    <div ng-if="loading" class="loading"> </div>
+
+
+    <div ng-if="!loading" class="modelguidancecontainer">
+
+        <!-- ======= -->
+        <!--   NOW   -->
+        <!-- ======= -->
+        <div class="modelguidance">
+            <div class="modelstatusheading" translate="MODELS.WHATHAVEYOUDONE.TITLE"></div>
+
+            <div ng-switch on="status">
+
+                <!-- ******** -->
+                <!-- TRAINING -->
+                <!-- ******** -->
+                <div ng-switch-when="training">
+                    <div class="modelstatusdetail" ng-if="project.isCrowdSourced && project.type === 'text'"
+                                                   translate="MODELS.WHATHAVEYOUDONE.TRAINING.CROWDSOURCED.TEXT"></div>
+                    <div class="modelstatusdetail" ng-if="project.isCrowdSourced && project.type === 'images'"
+                                                   translate="MODELS.WHATHAVEYOUDONE.TRAINING.CROWDSOURCED.IMAGES"></div>
+                    <div class="modelstatusdetail" ng-if="project.isCrowdSourced && project.type === 'numbers'"
+                                                   translate="MODELS.WHATHAVEYOUDONE.TRAINING.CROWDSOURCED.NUMBERS"></div>
+                    <div class="modelstatusdetail" ng-if="project.isCrowdSourced && project.type === 'sounds'"
+                                                   translate="MODELS.WHATHAVEYOUDONE.TRAINING.CROWDSOURCED.SOUNDS"></div>
+                    <div class="modelstatusdetail" ng-if="!project.isCrowdSourced && project.type === 'text'"
+                                                   translate="MODELS.WHATHAVEYOUDONE.TRAINING.INDIVIDUAL.TEXT"></div>
+                    <div class="modelstatusdetail" ng-if="!project.isCrowdSourced && project.type === 'images'"
+                                                   translate="MODELS.WHATHAVEYOUDONE.TRAINING.INDIVIDUAL.IMAGES"></div>
+                    <div class="modelstatusdetail" ng-if="!project.isCrowdSourced && project.type === 'numbers'"
+                                                   translate="MODELS.WHATHAVEYOUDONE.TRAINING.INDIVIDUAL.NUMBERS"></div>
+                    <div class="modelstatusdetail" ng-if="!project.isCrowdSourced && project.type === 'sounds'"
+                                                   translate="MODELS.WHATHAVEYOUDONE.TRAINING.INDIVIDUAL.SOUNDS"></div>
+                    <div class="modelstatusdetail">
+                        {{ 'MODELS.WHATHAVEYOUDONE.TRAINING.SINCE' | translate }}
+                        {{ models[0].updated | date : 'fullDate' }}
+                        {{ models[0].updated | date : 'shortTime' }}.
+                    </div>
+                    <div class="modelstatusdetail" translate="MODELS.WHATHAVEYOUDONE.PLEASEWAIT"></div>
+                </div>
+
+
+                <!-- ***** -->
+                <!-- READY -->
+                <!-- ***** -->
+                <div ng-switch-when="ready">
+                    <div class="modelstatusdetail">
+                        <span ng-if="project.isCrowdSourced && project.type === 'text'"
+                              translate="MODELS.WHATHAVEYOUDONE.READY.CROWDSOURCED.TEXT"></span>
+                        <span ng-if="project.isCrowdSourced && project.type === 'images'"
+                              translate="MODELS.WHATHAVEYOUDONE.READY.CROWDSOURCED.IMAGES"></span>
+                        <span ng-if="project.isCrowdSourced && project.type === 'numbers'"
+                              translate="MODELS.WHATHAVEYOUDONE.READY.CROWDSOURCED.NUMBERS"></span>
+                        <span ng-if="project.isCrowdSourced && project.type === 'sounds'"
+                              translate="MODELS.WHATHAVEYOUDONE.READY.CROWDSOURCED.SOUNDS"></span>
+                        <span ng-if="!project.isCrowdSourced && project.type === 'text'"
+                              translate="MODELS.WHATHAVEYOUDONE.READY.INDIVIDUAL.TEXT"></span>
+                        <span ng-if="!project.isCrowdSourced && project.type === 'images'"
+                              translate="MODELS.WHATHAVEYOUDONE.READY.INDIVIDUAL.IMAGES"></span>
+                        <span ng-if="!project.isCrowdSourced && project.type === 'numbers'"
+                              translate="MODELS.WHATHAVEYOUDONE.READY.INDIVIDUAL.NUMBERS"></span>
+                        <span ng-if="!project.isCrowdSourced && project.type === 'sounds'"
+                              translate="MODELS.WHATHAVEYOUDONE.READY.INDIVIDUAL.SOUNDS"></span>
+                        {{ projectSummary }}.
+                    </div>
+                    <div class="modelstatusdetail">
+                        <span ng-if="owner" translate="MODELS.WHATHAVEYOUDONE.READY.CREATED.YOU"></span>
+                        <span ng-hide="owner" translate="MODELS.WHATHAVEYOUDONE.READY.CREATED.TEACHER"></span>
+                        {{ models[0].updated | date : 'fullDate' }}
+                        {{ models[0].updated | date : 'shortTime' }}.
+                    </div>
+                    <div class="modelstatusdetail">
+                        <span ng-if="project.isCrowdSourced" translate="MODELS.WHATHAVEYOUDONE.READY.TRAINING.CLASS"></span>
+                        <span ng-hide="project.isCrowdSourced" translate="MODELS.WHATHAVEYOUDONE.READY.TRAINING.YOU"></span>
+                        <ul>
+                            <li ng-repeat="training in trainingcounts">
+                                {{ training.count }}
+                                examples of
+                                {{ training.label }}<span ng-if="!$last">, </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <!-- ***** -->
+                <!-- ERROR -->
+                <!-- ***** -->
+                <div ng-switch-when="error">
+                    <div class="modelstatusdetail" ng-if="project.isCrowdSourced && owner && project.type === 'text'"
+                                                   translate="MODELS.WHATHAVEYOUDONE.ERROR.CROWDSOURCED.YOU.TEXT"></div>
+                    <div class="modelstatusdetail" ng-if="project.isCrowdSourced && owner && project.type === 'images'"
+                                                   translate="MODELS.WHATHAVEYOUDONE.ERROR.CROWDSOURCED.YOU.IMAGES"></div>
+                    <div class="modelstatusdetail" ng-if="project.isCrowdSourced && owner && project.type === 'numbers'"
+                                                   translate="MODELS.WHATHAVEYOUDONE.ERROR.CROWDSOURCED.YOU.NUMBERS"></div>
+                    <div class="modelstatusdetail" ng-if="project.isCrowdSourced && owner && project.type === 'sounds'"
+                                                   translate="MODELS.WHATHAVEYOUDONE.ERROR.CROWDSOURCED.YOU.SOUNDS"></div>
+                    <div class="modelstatusdetail" ng-if="project.isCrowdSourced && !owner && project.type === 'text'"
+                                                   translate="MODELS.WHATHAVEYOUDONE.ERROR.CROWDSOURCED.CLASS.TEXT"></div>
+                    <div class="modelstatusdetail" ng-if="project.isCrowdSourced && !owner && project.type === 'images'"
+                                                   translate="MODELS.WHATHAVEYOUDONE.ERROR.CROWDSOURCED.CLASS.IMAGES"></div>
+                    <div class="modelstatusdetail" ng-if="project.isCrowdSourced && !owner && project.type === 'numbers'"
+                                                   translate="MODELS.WHATHAVEYOUDONE.ERROR.CROWDSOURCED.CLASS.NUMBERS"></div>
+                    <div class="modelstatusdetail" ng-if="project.isCrowdSourced && !owner && project.type === 'sounds'"
+                                                   translate="MODELS.WHATHAVEYOUDONE.ERROR.CROWDSOURCED.CLASS.SOUNDS"></div>
+                    <div class="modelstatusdetail" ng-if="!project.isCrowdSourced && project.type === 'text'"
+                                                   translate="MODELS.WHATHAVEYOUDONE.ERROR.INDIVIDUAL.TEXT"></div>
+                    <div class="modelstatusdetail" ng-if="!project.isCrowdSourced && project.type === 'images'"
+                                                   translate="MODELS.WHATHAVEYOUDONE.ERROR.INDIVIDUAL.IMAGES"></div>
+                    <div class="modelstatusdetail" ng-if="!project.isCrowdSourced && project.type === 'numbers'"
+                                                   translate="MODELS.WHATHAVEYOUDONE.ERROR.INDIVIDUAL.NUMBERS"></div>
+                    <div class="modelstatusdetail" ng-if="!project.isCrowdSourced && project.type === 'sounds'"
+                                                   translate="MODELS.WHATHAVEYOUDONE.ERROR.INDIVIDUAL.SOUNDS"></div>
+                    <div class="modelstatusdetail" translate="MODELS.WHATHAVEYOUDONE.FAIL"></div>
+                </div>
+
+
+                <!-- **** -->
+                <!-- IDLE -->
+                <!-- **** -->
+                <div ng-switch-default>
+                    <div ng-if="project.labels.length === 0">
+                        <div class="modelstatusdetail" ng-if="project.isCrowdSourced && project.type === 'text'"
+                            translate="MODELS.WHATHAVEYOUDONE.IDLE.NOLABELS.CROWDSOURCED.TEXT"></div>
+                        <div class="modelstatusdetail" ng-if="project.isCrowdSourced && project.type === 'images'"
+                            translate="MODELS.WHATHAVEYOUDONE.IDLE.NOLABELS.CROWDSOURCED.IMAGES"></div>
+                        <div class="modelstatusdetail" ng-if="project.isCrowdSourced && project.type === 'numbers'"
+                            translate="MODELS.WHATHAVEYOUDONE.IDLE.NOLABELS.CROWDSOURCED.NUMBERS"></div>
+                        <div class="modelstatusdetail" ng-if="project.isCrowdSourced && project.type === 'sounds'"
+                            translate="MODELS.WHATHAVEYOUDONE.IDLE.NOLABELS.CROWDSOURCED.SOUNDS"></div>
+                        <div class="modelstatusdetail" ng-if="!project.isCrowdSourced && project.type === 'text'"
+                            translate="MODELS.WHATHAVEYOUDONE.IDLE.NOLABELS.INDIVIDUAL.TEXT"></div>
+                        <div class="modelstatusdetail" ng-if="!project.isCrowdSourced && project.type === 'images'"
+                            translate="MODELS.WHATHAVEYOUDONE.IDLE.NOLABELS.INDIVIDUAL.IMAGES"></div>
+                        <div class="modelstatusdetail" ng-if="!project.isCrowdSourced && project.type === 'numbers'"
+                            translate="MODELS.WHATHAVEYOUDONE.IDLE.NOLABELS.INDIVIDUAL.NUMBERS"></div>
+                        <div class="modelstatusdetail" ng-if="!project.isCrowdSourced && project.type === 'sounds'"
+                            translate="MODELS.WHATHAVEYOUDONE.IDLE.NOLABELS.INDIVIDUAL.SOUNDS"></div>
+                    </div>
+                    <div ng-if="project.labels.length > 0 && trainingdatastatus === 'no_data'">
+                        <div class="modelstatusdetail">
+                            <span ng-if="project.isCrowdSourced && project.type === 'text'"
+                                  translate="MODELS.WHATHAVEYOUDONE.IDLE.NODATA.CROWDSOURCED.TEXT"></span>
+                            <span ng-if="project.isCrowdSourced && project.type === 'images'"
+                                  translate="MODELS.WHATHAVEYOUDONE.IDLE.NODATA.CROWDSOURCED.IMAGES"></span>
+                            <span ng-if="project.isCrowdSourced && project.type === 'numbers'"
+                                  translate="MODELS.WHATHAVEYOUDONE.IDLE.NODATA.CROWDSOURCED.NUMBERS"></span>
+                            <span ng-if="project.isCrowdSourced && project.type === 'sounds'"
+                                  translate="MODELS.WHATHAVEYOUDONE.IDLE.NODATA.CROWDSOURCED.SOUNDS"></span>
+                            <span ng-if="!project.isCrowdSourced && project.type === 'text'"
+                                  translate="MODELS.WHATHAVEYOUDONE.IDLE.NODATA.INDIVIDUAL.TEXT"></span>
+                            <span ng-if="!project.isCrowdSourced && project.type === 'images'"
+                                  translate="MODELS.WHATHAVEYOUDONE.IDLE.NODATA.INDIVIDUAL.IMAGES"></span>
+                            <span ng-if="!project.isCrowdSourced && project.type === 'numbers'"
+                                  translate="MODELS.WHATHAVEYOUDONE.IDLE.NODATA.INDIVIDUAL.NUMBERS"></span>
+                            <span ng-if="!project.isCrowdSourced && project.type === 'sounds'"
+                                  translate="MODELS.WHATHAVEYOUDONE.IDLE.NODATA.INDIVIDUAL.SOUNDS"></span>
+                            {{ projectSummary }}.
+                        </div>
+                        <div class="modelstatusdetail" ng-if="project.isCrowdSourced"
+                                                       translate="MODELS.WHATHAVEYOUDONE.IDLE.NOEXAMPLES.CLASS"></div>
+                        <div class="modelstatusdetail" ng-hide="project.isCrowdSourced"
+                                                       translate="MODELS.WHATHAVEYOUDONE.IDLE.NOEXAMPLES.YOU"></div>
+                    </div>
+                    <div ng-if="project.labels.length > 0 && trainingdatastatus !== 'no_data'">
+                        <div class="modelstatusdetail">
+                            <span ng-if="project.isCrowdSourced && project.type === 'text'"
+                                  translate="MODELS.WHATHAVEYOUDONE.IDLE.DATA.CROWDSOURCED.TEXT"></span>
+                            <span ng-if="project.isCrowdSourced && project.type === 'images'"
+                                  translate="MODELS.WHATHAVEYOUDONE.IDLE.DATA.CROWDSOURCED.IMAGES"></span>
+                            <span ng-if="project.isCrowdSourced && project.type === 'numbers'"
+                                  translate="MODELS.WHATHAVEYOUDONE.IDLE.DATA.CROWDSOURCED.NUMBERS"></span>
+                            <span ng-if="project.isCrowdSourced && project.type === 'sounds'"
+                                  translate="MODELS.WHATHAVEYOUDONE.IDLE.DATA.CROWDSOURCED.SOUNDS"></span>
+                            <span ng-if="!project.isCrowdSourced && project.type === 'text'"
+                                  translate="MODELS.WHATHAVEYOUDONE.IDLE.DATA.INDIVIDUAL.TEXT"></span>
+                            <span ng-if="!project.isCrowdSourced && project.type === 'images'"
+                                  translate="MODELS.WHATHAVEYOUDONE.IDLE.DATA.INDIVIDUAL.IMAGES"></span>
+                            <span ng-if="!project.isCrowdSourced && project.type === 'numbers'"
+                                  translate="MODELS.WHATHAVEYOUDONE.IDLE.DATA.INDIVIDUAL.NUMBERS"></span>
+                            <span ng-if="!project.isCrowdSourced && project.type === 'sounds'"
+                                  translate="MODELS.WHATHAVEYOUDONE.IDLE.DATA.INDIVIDUAL.SOUNDS"></span>
+                            {{ projectSummary }}.
+                        </div>
+                        <div class="modelstatusdetail">
+                            <span ng-if="project.isCrowdSourced" translate="MODELS.WHATHAVEYOUDONE.IDLE.DATA.COLLECTED.CLASS"></span>
+                            <span ng-hide="project.isCrowdSourced" translate="MODELS.WHATHAVEYOUDONE.IDLE.DATA.COLLECTED.YOU"></span>
+                            <ul>
+                                <li ng-repeat="training in trainingcounts">
+                                    {{ training.count }}
+                                    example<span ng-if="training.count !== 1">s</span> of
+                                    {{ training.label }}<span ng-if="!$last">, </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- ======== -->
+        <!--   NEXT   -->
+        <!-- ======== -->
+        <div class="modelguidance">
+            <div class="modelstatusheading" translate="MODELS.WHATSNEXT.TITLE"></div>
+
+            <div ng-switch on="status">
+
+                <!-- ******** -->
+                <!-- TRAINING -->
+                <!-- ******** -->
+                <div ng-switch-when="training">
+                    <div class="modelstatusdetail" translate="MODELS.WHATSNEXT.PLEASEWAIT"></div>
+                    <div class="modelstatusdetail" ng-if="quizQuestion" translate="MODELS.WHATSNEXT.OFFERQUIZ"></div>
+                </div>
+
+
+                <!-- ***** -->
+                <!-- READY -->
+                <!-- ***** -->
+                <div ng-switch-when="ready">
+                    <div class="modelstatusdetail" ng-if="project.type === 'text'" translate="MODELS.WHATSNEXT.READY.TEST.TEXT"></div>
+                    <div class="modelstatusdetail" ng-if="project.type === 'images'" translate="MODELS.WHATSNEXT.READY.TEST.IMAGES"></div>
+                    <div class="modelstatusdetail" ng-if="project.type === 'numbers'" translate="MODELS.WHATSNEXT.READY.TEST.NUMBERS"></div>
+                    <div class="modelstatusdetail" ng-if="project.type === 'sounds'" translate="MODELS.WHATSNEXT.READY.TEST.SOUNDS"></div>
+                    <div class="modelstatusdetail" translate="MODELS.WHATSNEXT.READY.SCRATCH"></div>
+                    <div class="modelstatusdetail" ng-if="project.isCrowdSourced" translate="MODELS.WHATSNEXT.READY.ADDITIONAL_TRAINING.MORE_EXAMPLES.CROWDSOURCED" translate-values='{ urls : projecturls }'></div>
+                    <div class="modelstatusdetail" ng-hide="project.isCrowdSourced" translate="MODELS.WHATSNEXT.READY.ADDITIONAL_TRAINING.MORE_EXAMPLES.INDIVIDUAL" translate-values='{ urls : projecturls }'></div>
+                    <div class="modelstatusdetail" ng-if="owner" translate="MODELS.WHATSNEXT.READY.ADDITIONAL_TRAINING.RETRAIN.YOU"></div>
+                    <div class="modelstatusdetail" ng-hide="owner" translate="MODELS.WHATSNEXT.READY.ADDITIONAL_TRAINING.RETRAIN.CLASS"></div>
+                </div>
+
+
+                <!-- ***** -->
+                <!-- ERROR -->
+                <!-- ***** -->
+                <div ng-switch-when="error">
+                    <div class="modelstatusdetail" translate="MODELS.WHATSNEXT.FAIL"></div>
+                </div>
+
+
+                <!-- **** -->
+                <!-- IDLE -->
+                <!-- **** -->
+                <div ng-switch-default>
+                    <div ng-if="project.labels.length === 0">
+                        <div class="modelstatusdetail" translate="MODELS.WHATSNEXT.IDLE.NOLABELS" translate-values='{ urls : projecturls }'></div>
+                    </div>
+                    <div ng-if="project.labels.length === 1">
+                        <div class="modelstatusdetail" translate="MODELS.WHATSNEXT.IDLE.ONELABEL.EXPLANATION" translate-values='{ label : project.labels[0] }'></div>
+                        <div class="modelstatusdetail" ng-if="owner">
+                            <strong translate="MODELS.WHATSNEXT.IDLE.ONELABEL.ISTHATALL"></strong>
+                        </div>
+                        <div class="modelstatusdetail" ng-if="owner">
+                            <ul>
+                                <li translate="MODELS.WHATSNEXT.IDLE.ONELABEL.NO" translate-values='{ urls : projecturls }'></li>
+                                <li translate="MODELS.WHATSNEXT.IDLE.ONELABEL.YES" translate-values='{ urls : projecturls, label : project.labels[0] }'></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div ng-if="project.labels.length > 1">
+                        <div ng-if="trainingdatastatus === 'no_data'" class="modelstatusdetail" translate-values='{ urls : projecturls }'
+                             translate="MODELS.WHATSNEXT.IDLE.LABELS.NO_DATA"></div>
+                        <div ng-if="trainingdatastatus === 'insufficient_data'">
+                            <div class="modelstatusdetail" translate="MODELS.WHATSNEXT.IDLE.LABELS.MORE_DATA.KEEP_GOING"></div>
+                            <div class="modelstatusdetail" ng-if="owner" translate="MODELS.WHATSNEXT.IDLE.LABELS.MORE_DATA.MORE_EXAMPLES.YOU" translate-values='{ urls : projecturls }'></div>
+                            <div class="modelstatusdetail" ng-hide="owner" translate="MODELS.WHATSNEXT.IDLE.LABELS.MORE_DATA.MORE_EXAMPLES.CLASS" translate-values='{ urls : projecturls }'></div>
+                            <div class="modelstatusdetail" translate="MODELS.WHATSNEXT.IDLE.LABELS.MORE_DATA.MORE_IS_BETTER" translate-values='{ minimumExamples : minimumExamples }'></div>
+                        </div>
+                        <div ng-if="trainingdatastatus === 'data' && owner">
+                            <div class="modelstatusdetail" translate="MODELS.WHATSNEXT.IDLE.LABELS.ENOUGH_DATA.READY_TO_START"></div>
+                            <div class="modelstatusdetail" ng-if="project.isCrowdSourced" translate="MODELS.WHATSNEXT.IDLE.LABELS.ENOUGH_DATA.START_TRAINING.CROWDSOURCED"></div>
+                            <div class="modelstatusdetail" ng-hide="project.isCrowdSourced" translate="MODELS.WHATSNEXT.IDLE.LABELS.ENOUGH_DATA.START_TRAINING.INDIVIDUAL"></div>
+                            <div class="modelstatusdetail" ng-if="project.isCrowdSourced" translate="MODELS.WHATSNEXT.IDLE.LABELS.ENOUGH_DATA.MORE_EXAMPLES.CROWDSOURCED" translate-values='{ urls : projecturls }'></div>
+                            <div class="modelstatusdetail" ng-hide="project.isCrowdSourced" translate="MODELS.WHATSNEXT.IDLE.LABELS.ENOUGH_DATA.MORE_EXAMPLES.INDIVIDUAL" translate-values='{ urls : projecturls }'></div>
+                        </div>
+                        <div ng-if="trainingdatastatus === 'data' && !owner">
+                            <div class="modelstatusdetail" translate="MODELS.WHATSNEXT.IDLE.LABELS.ENOUGH_DATA.WAITING_FOR_TEACHER"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div ng-if="status === 'ready'" class="trainingserversection">
+        <div style="margin: 1em;" ng-if="project.type === 'text'" translate="MODELS.TESTING.INTRO.TEXT" ></div>
+        <div style="margin: 1em;" ng-if="project.type === 'images'" translate="MODELS.TESTING.INTRO.IMAGES" ></div>
+        <div style="margin: 1em;" ng-if="project.type === 'numbers'" translate="MODELS.TESTING.INTRO.NUMBERS" ></div>
+        <div style="margin: 1em;" ng-if="project.type === 'sounds'" translate="MODELS.TESTING.INTRO.SOUNDS" ></div>
+        <form name="testform" ng-submit="vm.testModel($event, testform, project)">
+            <input ng-if="project.type === 'text'"
+                   style="margin-left: 2em; width: 70%"
+                   type="text"
+                   ng-pattern="/^[^\n\t\r]+$/"
+                   ng-model="testformData.testquestion"
+                   ng-required="true"
+                   maxlength="2000"
+                   ng-maxlength="2000"
+                   placeholder="enter a test text here">
+            <div ng-if="project.type === 'images'" ng-click="vm.useWebcam($event)"
+                 class="btn newexamplebutton" style="margin: 2em">
+                <div class="newexamplelabel">
+                    &nbsp;
+                    <span class="glyphicon glyphicon-camera"></span>
+                    <span translate="MODELS.TESTING.WEBCAM"></span>
+                </div>
+            </div>
+            <div ng-if="project.type === 'images'" ng-click="vm.useCanvas($event)"
+                 class="btn newexamplebutton" style="margin: 1em" >
+                <div class="newexamplelabel">
+                    &nbsp;
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    <span translate="MODELS.TESTING.DRAWING"></span>
+                </div>
+            </div>
+            <br ng-if="project.type === 'images'"/>
+            <input ng-if="project.type === 'images'"
+                   style="margin-left: 2em; width: 70%"
+                   type="text"
+                   ng-model="testformData.testimageurl"
+                   ng-required="true"
+                   placeholder="Test with a web address for an image on the Internet">
+            <button ng-if="project.type === 'images'"
+                   class="btn btn-default"
+                   type="submit"
+                   ng-disabled="testform.$invalid"
+                   translate="MODELS.TESTING.WWW"></button>
+
+
+
+            <table ng-if="project.type === 'numbers'" style="margin-left: 2em; margin-bottom: 1em;">
+                <tr ng-repeat="field in project.fields">
+                    <td style="padding-right: 2em;">{{ field.name }}</td>
+                    <td>
+                        <input type="text"
+                               ng-if="field.type === 'number'"
+                               ng-pattern="/^-?[0-9]+(?:\.[0-9]*)?$/"
+                               ng-model="testformData[field.name]"
+                               ng-required="true">
+                        <select ng-if="field.type === 'multichoice'"
+                                ng-model="testformData[field.name]"
+                                ng-init="testformData[field.name] = field.choices[0]">
+                            <option ng-repeat="choice in field.choices track by $index"
+                                    value="{{choice}}">{{choice}}</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <input ng-if="project.type === 'text' || project.type === 'numbers'" type="submit" class="btn btn-primary" value="{{ 'APP.TEST' | translate }}" ng-disabled="testform.$invalid" style="margin-left: 1em;" >
+            <div ng-if="project.type === 'numbers'" class="btn btn-default" style="margin-left: 50px;" ui-sref="mlproject_model_describe({ projectId : projectId, userId : userId, modelId : projectId })">Describe your model! <span class="badge">beta</span></div>
+            <div ng-if="project.type === 'sounds'" style="margin: 1em">
+                <button ng-disabled="listening"  ng-click="vm.startListening()" class="btn btn-primary" translate="MODELS.TESTING.STARTLISTENING"></button>
+                <button ng-disabled="!listening" ng-click="vm.stopListening()" class="btn btn-primary" translate="MODELS.TESTING.STOPLISTENING"></button>
+            </div>
+        </form>
+        <div style="margin: 2em;" ng-if="testoutput">
+            <div translate="MODELS.TESTING.RECOGNISED" translate-values='{ testoutput : testoutput }'></div>
+            <div> {{ testoutput_explanation }} </div>
+        </div>
+    </div>
+
+
+
+    <div ng-if="(models && models.length > 0) || trainingdatastatus === 'data'" class="trainingserversection" ng-hide="!owner || loading">
+        <div><strong translate="MODELS.TRAINING.TITLE"></strong></div>
+        <div ng-repeat="model in models">
+            <table class="modelinfo">
+                <tr>
+                    <td><strong translate="MODELS.TRAINING.STARTED"></strong></td>
+                    <td>
+                        {{ model.updated | date : 'fullDate' }}
+                        {{ model.updated | date : 'shortTime' }}
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong translate="MODELS.TRAINING.STATUS"></strong></td>
+                    <td> {{ model.status }} </td>
+                </tr>
+                <tr ng-if="model.expiry && model.status !== 'Training'">
+                    <td><strong translate="MODELS.TRAINING.DELETION"></strong></td>
+                    <td>
+                        {{ model.expiry | date : 'fullDate' }}
+                        {{ model.expiry | date : 'shortTime' }}
+                    </td>
+                </tr>
+                <tr ng-if="model.status === 'Training' && model.lastPollTime">
+                    <td><strong translate="MODELS.TRAINING.LASTCHECK"></strong></td>
+                    <td>
+                        <span title="{{ model.lastPollTime | amDateFormat: 'h:mm:ss a' }}" am-time-ago="model.lastPollTime"></span>
+                        <md-button class="md-icon-button test-tooltip">
+                            <md-tooltip md-direction="bottom" class="tooltipBody">{{ "MODELS.TRAINING.PROMPTREFRESH" | translate }}</md-tooltip>
+                            <span class="glyphicon glyphicon-question-sign"></span>
+                        </md-button>
+                    </td>
+                </tr>
+                <tr><td colspan=2> &nbsp; </td></tr>
+                <tr ng-hide="project.type === 'sounds'">
+                    <td colspan=2>
+                        <button class="btn btn-danger"
+                                ng-if="owner"
+                                ng-click="vm.deleteModel($event, project, model)"
+                                ng-disabled="submittingDeleteRequest">
+                            {{ (model.status === 'Training' ? 'MODELS.CANCEL' : 'MODELS.DELETE') | translate }}
+                        </button>
+
+                        <md-progress-circular style="display: inline" ng-if="submittingDeleteRequest" md-mode="indeterminate"></md-progress-circular>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <button ng-if="!loading && status !== 'training' && trainingdatastatus === 'data' && owner"
+                style="margin: 4em;"
+                class="btn btn-primary"
+                ng-click="vm.createModel($event, project)"
+                ng-disabled="submittingTrainingRequest || submittingDeleteRequest"
+                translate="MODELS.TRAIN"></button>
+
+        <md-progress-circular style="display: inline" ng-if="submittingTrainingRequest" md-mode="indeterminate"></md-progress-circular>
+    </div>
+
+
+
+    <div class="quizSection" ng-if="(status === 'training') && quizQuestion">
+        <hr>
+        <h3 translate="MODELS.QUIZ.TITLE"></h3>
+        <div class="quizintro" translate="MODELS.QUIZ.INTROQUESTION"> </div>
+        <div class="quizintro" ng-if="quizQuestion.attempted" translate="MODELS.QUIZ.PREVIOUSLY_ATTEMPTED"> </div>
+
+        <div class="quiz">
+            <div class="quizquestion">
+                {{ quizQuestion.question }}
+            </div>
+            <div class="quizanswer" ng-repeat="answer in quizQuestion.answers" ng-class="{ 'answered' : answered }" >
+                <input type="checkbox" ng-model="answer.selected" ng-disabled="answered" ng-click="vm.checkQuizAnswers(quizQuestion)">
+                <div>{{ answer.text }}</div>
+            </div>
+            <div ng-if="answered">
+                <div class="answerconfirm" ng-if="answerCorrect" translate="MODELS.QUIZ.CORRECT_ANSWER"> </div>
+                <div class="answerconfirm" ng-if="!answerCorrect" translate="MODELS.QUIZ.INCORRECT_ANSWER"> </div>
+                <div class="answernotes" ng-repeat="note in quizQuestion.notes"> {{ note }} </div>
+                <button class="btn btn-default" ng-click="vm.nextQuizQuestion()" translate="MODELS.QUIZ.NEXT_QUESTION"></button>
+            </div>
+        </div>
+    </div>
+
+</div>

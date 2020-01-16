@@ -1,0 +1,37 @@
+<div class="jumbotron">
+    <h2 class="text-center" translate="ABOUT.TITLE"></h2>
+</div>
+<div class="menucontainer">
+    <div class="mlprojectmenu aboutsection aboutwide">
+        <div class="mlprojectmenutitle" translate="ABOUT.IN6SECS"></div>
+        <img class="aboutvideo" src="static/images/machinelearningforkids.gif">
+    </div>
+    <div class="mlprojectmenu aboutsection aboutwide">
+        <div class="mlprojectmenutitle" translate="ABOUT.IN20MINS"></div>
+        <iframe class="aboutvideo" src="https://www.youtube.com/embed/EjbHXMzeX4c" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="mlprojectmenu aboutsection aboutnarrow">
+        <div class="mlprojectmenutitle" translate="ABOUT.WHAT.TITLE"></div>
+        <div class="aboutdescription" translate="ABOUT.WHAT.BODY"></div>
+        <button type="button" class="btn btn-primary" ui-sref="worksheets" translate="APP.WORKSHEETS"></button>
+    </div>
+    <div class="mlprojectmenu aboutsection aboutnarrow">
+        <div class="mlprojectmenutitle" translate="ABOUT.WHY.TITLE"></div>
+        <div class="aboutdescription" translate="ABOUT.WHY.BODY"></div>
+    </div>
+    <div class="mlprojectmenu aboutsection aboutnarrow">
+        <div class="mlprojectmenutitle" translate="ABOUT.TECH.TITLE"></div>
+        <div class="aboutdescription" translate="ABOUT.TECH.BODY"></div>
+        <div class="aboutdescription" ng-if="!isAuthenticated" >
+            <span translate="ABOUT.TECH.LOGIN"></span>
+            <button type='button' class='btn btn-primary' ui-sref='login' translate="APP.LOGIN"></button>
+        </div>
+    </div>
+    <div class="mlprojectmenu aboutsection aboutnarrow">
+        <div class="mlprojectmenutitle" translate="ABOUT.FURTHER.TITLE"></div>
+        <div class="aboutdescription">
+            <span translate="ABOUT.FURTHER.BODY"></span>
+            <button type="button" class="btn btn-primary" ui-sref="links({'#':'top'})" translate="ABOUT.FURTHER.TITLE"></button>
+        </div>
+    </div>
+</div>

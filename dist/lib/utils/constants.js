@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ONE_YEAR = 31536000000;
+exports.ONE_WEEK = 604800000;
+exports.ONE_DAY_PLUS_A_BIT = 86820000;
+exports.THREE_HOURS = 10800000;
+exports.ONE_HOUR = 3600000;
+exports.FIFTY_MINUTES = 3000000;
+exports.FIFTEEN_MINUTES = 900000;
+exports.FIVE_MINUTES = 300000;

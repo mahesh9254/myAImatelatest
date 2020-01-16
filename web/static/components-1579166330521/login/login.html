@@ -1,0 +1,251 @@
+<div class="jumbotron">
+    <h2 class="text-center" translate>LOGIN.TITLE</h2>
+</div>
+<div ng-if="isAuthenticated" class="alert alert-info pageheadermsg" translate>
+    LOGIN.ALREADY_LOGGEDIN
+</div>
+
+<div ng-if="failure" class="alert alert-danger pageheadermsg" role="alert" id="sessionuserfailure">
+    <span translate translate-values="{ message: failure.message }">LOGIN.ERROR</span><br/>
+    <em ng-if="failure.status >= 500" translate>LOGIN.ERROR_HELP</em>
+</div>
+
+
+<div ng-if="!isAuthenticated" class="loginPage"
+     ng-class="{ 'loginPageWide' : vm.loginstate === 'whyregister' || vm.loginstate === 'teachersignup' }">
+
+    <!-- ********************** -->
+    <!--  ENTRY POINT           -->
+    <!-- ********************** -->
+    <div ng-if="vm.loginstate === 'login'">
+        <div class="loginItem" ng-if="vm.deployment === 'machinelearningforkids.co.uk'">
+            <label translate>LOGIN.FIRST_TIME</label>
+            <button class="btn btn-primary login-button" ng-click="vm.loginstate = 'signup'" translate>LOGIN.SIGN_UP</button>
+        </div>
+        <div class="loginInfoLink loginButtonInfo" ng-if="vm.deployment === 'machinelearningforkids.co.uk'">
+            <a href="" ng-click="vm.loginstate = 'whyregister'" translate>LOGIN.WHY_REGISTER</a>
+        </div>
+        <div class="loginItem" ng-if="vm.deployment === 'machinelearningforkids.co.uk'">
+            <label translate>LOGIN.ALREADY_REGISTERED</label>
+            <button class="btn btn-primary login-button" ng-click="vm.authService.login()" translate>LOGIN.LOGIN</button>
+        </div>
+        <div class="loginInfoLink loginButtonInfo" ng-if="vm.deployment === 'machinelearningforkids.co.uk'">
+            <a href="" ng-click="vm.loginstate = 'reset'" translate>LOGIN.FORGOT_DETAILS</a>
+        </div>
+        <hr ng-if="vm.deployment === 'machinelearningforkids.co.uk'"/>
+        <div class="loginItem">
+            <label translate>LOGIN.TRY_TITLE</label>
+            <button class="btn btn-primary login-button" ng-click="vm.startTryItNowSession()" translate>LOGIN.TRY_NOW</button>
+        </div>
+    </div>
+
+
+
+    <!-- ********************** -->
+    <!--    SIGNUP NEW USER     -->
+    <!-- ********************** -->
+    <div ng-if="vm.loginstate === 'signup'">
+        <div class="loginInfoLink">
+            <a href="" ng-click="vm.loginstate = 'login'">&lt; <span translate>APP.BACK</span></a>
+        </div>
+        <div class="loginHeading" translate>LOGIN.SIGN_UP</div>
+        <div class="loginInfo" translate>LOGIN.WELCOME</div>
+        <div class="loginInfoLink loginButtonInfo">
+            <a href="" ng-click="vm.loginstate = 'whyregister'" translate>LOGIN.WHY_REGISTER</a>
+        </div>
+        <hr/>
+        <div class="loginSubheading" translate>LOGIN.WHO_YOU</div>
+        <div class="wideLoginButton">
+            <button class="btn btn-primary" ng-click="vm.loginstate = 'teachersignup'" translate>
+                LOGIN.TEACHER
+            </button>
+        </div>
+        <div class="wideLoginButton">
+            <button class="btn btn-primary" ng-click="vm.loginstate = 'newstudent'" translate>
+                LOGIN.STUDENT
+            </button>
+        </div>
+    </div>
+
+
+
+    <!-- ********************** -->
+    <!--  FORGOT YOUR DETAILS?  -->
+    <!-- ********************** -->
+    <div ng-if="vm.loginstate === 'reset'">
+        <div class="loginInfoLink">
+            <a href="" ng-click="vm.loginstate = 'login'">&lt; <span translate>APP.BACK</span></a>
+        </div>
+        <div class="loginHeading" translate>LOGIN.FORGOT_DETAILS</div>
+        <div class="loginInfo" translate>LOGIN.FORGOT_TEXT</div>
+        <hr/>
+        <div class="loginSubheading" translate>LOGIN.WHO_YOU</div>
+        <div class="wideLoginButton">
+            <button class="btn btn-primary" ng-click="vm.authService.reset()" translate>
+                LOGIN.TEACHER
+            </button>
+        </div>
+        <div class="wideLoginButton">
+            <button class="btn btn-primary" ng-click="vm.loginstate = 'resetstudent'" translate>
+                LOGIN.STUDENT
+            </button>
+        </div>
+    </div>
+
+
+
+
+    <!-- ************************** -->
+    <!--     SIGNUP - TEACHER       -->
+    <!-- ************************** -->
+    <div ng-if="vm.loginstate === 'teachersignup'">
+        <div class="loginInfoLink">
+            <a href="" ng-click="vm.loginstate = 'signup'">&lt; <span translate>APP.BACK</span></a>
+        </div>
+        <div class="loginHeading" translate>SIGNUP.TEACHER.TITLE</div>
+        <div class="loginInfo" translate>SIGNUP.TEACHER.INFO1</div>
+        <div class="loginInfo" translate>SIGNUP.TEACHER.INFO2</div>
+        <div class="loginItem">
+            <div class="loginType">
+                <div class="loginNewClassType" translate>SIGNUP.UNMANAGED.TITLE</div>
+                <div class="loginNewClassInfo" translate>SIGNUP.UNMANAGED.INTRO</div>
+                <div class="loginNewClassInfo" translate>SIGNUP.UNMANAGED.LISTINTRO</div>
+                <ul>
+                    <li translate>SIGNUP.UNMANAGED.LIST_CREATEACCOUNT</li>
+                    <li translate>SIGNUP.UNMANAGED.LIST_CREATEAPIKEYS</li>
+                    <li translate>SIGNUP.UNMANAGED.LIST_ENTERAPIKEYS</li>
+                </ul>
+                <div class="loginNewClassInfo" translate>SIGNUP.UNMANAGED.HELP</div>
+                <div style="text-align: center">
+                    <button class="btn btn-primary signup-button" ui-sref="signup">
+                        <strong translate>LOGIN.SIGN_UP</strong>
+                    </button>
+                </div>
+            </div>
+            <div class="loginType">
+                <div class="loginNewClassType" translate>SIGNUP.MANAGED.TITLE</div>
+                <div class="loginNewClassInfo" translate>SIGNUP.MANAGED.INTRO</div>
+                <ul>
+                    <li translate>SIGNUP.MANAGED.LIST_NUMBEROFSTUDENTS</li>
+                    <li translate>SIGNUP.MANAGED.LIST_NAMEOFSCHOOL</li>
+                </ul>
+                <div style="text-align: center">
+                    <button class="btn btn-primary signup-button" ng-click="vm.sendEmail()" translate>
+                        SIGNUP.MANAGED.EMAIL
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- ************************** -->
+    <!--     SIGNUP - STUDENT       -->
+    <!-- ************************** -->
+    <div ng-if="vm.loginstate === 'newstudent'">
+        <div class="loginInfoLink">
+            <a href="" ng-click="vm.loginstate = 'signup'">&lt; <span translate>APP.BACK</span></a>
+        </div>
+        <div class="loginHeading" translate>LOGIN.ARE_YOU_A_STUDENT</div>
+        <div class="loginInfo" translate>LOGIN.ARE_YOU_A_STUDENT_INTRO_1</div>
+        <div class="loginInfo" translate>LOGIN.ARE_YOU_A_STUDENT_INTRO_2</div>
+    </div>
+
+
+
+    <!-- ************************** -->
+    <!--  RESET PASSWORD - STUDENT  -->
+    <!-- ************************** -->
+    <div ng-if="vm.loginstate === 'resetstudent'">
+        <div class="loginInfoLink">
+            <a href="" ng-click="vm.loginstate = 'reset'">&lt; <span translate>APP.BACK</span></a>
+        </div>
+        <div class="loginHeading" translate>LOGIN.ARE_YOU_A_STUDENT</div>
+        <div class="loginInfo" translate>LOGIN.RESET_STUDENT_PASSWORD_1</div>
+        <div class="loginInfo" translate>LOGIN.RESET_STUDENT_PASSWORD_2</div>
+        <div class="loginInfo" translate>LOGIN.RESET_STUDENT_PASSWORD_3</div>
+    </div>
+
+
+
+    <!-- ************************** -->
+    <!--    EXPLAIN "TRY IT NOW"    -->
+    <!-- ************************** -->
+    <div ng-if="vm.loginstate === 'whyregister'">
+        <div class="loginInfoLink">
+            <a href="" ng-click="vm.loginstate = 'login'">&lt; Back</a>
+        </div>
+        <div class="loginHeading" translate="LOGIN.WHY_REGISTER"></div>
+        <div class="loginInfo" translate="LOGIN.WHY_REGISTER_INTRO_1"></div>
+        <div class="loginInfo" translate="LOGIN.WHY_REGISTER_INTRO_2"></div>
+        <div class="loginInfo">
+            <table class="loginInfoGrid">
+                <tr>
+                    <th></th>
+                    <th translate="LOGIN.TRY_NOW"></th>
+                    <th translate="HELP.ACCOUNTISSUES.CREATE_ACCOUNT"></th>
+                </tr>
+                <tr>
+                    <td class="loginInfoGridLabel" colspan="3" translate="HELP.ACCOUNTISSUES.TRAINMODELS"></td>
+                </tr>
+                <tr>
+                    <td class="loginInfoGridSubItem loginInfoGridLabel" translate="WORKSHEETS.TYPES.TEXT"></td>
+                    <td class="loginInfoGridCheck"><span class="glyphicon glyphicon-ok greencheck"> </span></td>
+                    <td class="loginInfoGridCheck"><span class="glyphicon glyphicon-ok greencheck"> </span></td>
+                </tr>
+                <tr>
+                    <td class="loginInfoGridSubItem loginInfoGridLabel" translate="WORKSHEETS.TYPES.NUMBERS"></td>
+                    <td class="loginInfoGridCheck"><span class="glyphicon glyphicon-ok greencheck"> </span></td>
+                    <td class="loginInfoGridCheck"><span class="glyphicon glyphicon-ok greencheck"> </span></td>
+                </tr>
+                <tr>
+                    <td class="loginInfoGridSubItem loginInfoGridLabel" translate="WORKSHEETS.TYPES.IMAGES"></td>
+                    <td> </td>
+                    <td class="loginInfoGridCheck"><span class="glyphicon glyphicon-ok greencheck"> </span></td>
+                </tr>
+                <tr>
+                    <td class="loginInfoGridLabel" translate="HELP.ACCOUNTISSUES.USE_SCRATCH"></td>
+                    <td class="loginInfoGridCheck"><span class="glyphicon glyphicon-ok greencheck"> </span></td>
+                    <td class="loginInfoGridCheck"><span class="glyphicon glyphicon-ok greencheck"> </span></td>
+                </tr>
+                <tr>
+                    <td class="loginInfoGridLabel" translate="HELP.ACCOUNTISSUES.CREATE_PROJECTS"></td>
+                    <td class="loginInfoGridCheck" translate="HELP.ACCOUNTISSUES.ONE_PROJECT"></td>
+                    <td class="loginInfoGridCheck" translate="HELP.ACCOUNTISSUES.MULTIPLE_PROJECTS"></td>
+                </tr>
+                <tr>
+                    <td class="loginInfoGridLabel" translate="HELP.ACCOUNTISSUES.SAVE_PROJECTS"></td>
+                    <td> </td>
+                    <td class="loginInfoGridCheck"><span class="glyphicon glyphicon-ok greencheck"> </span></td>
+                </tr>
+                <tr>
+                    <td class="loginInfoGridLabel" rowspan="3" translate="HELP.ACCOUNTISSUES.WORK_ON_PROJECTS"></td>
+                    <td class="loginInfoGridCheck" translate="HELP.ACCOUNTISSUES.FEW_HOURS"></td>
+                    <td class="loginInfoGridCheck" translate="HELP.ACCOUNTISSUES.UNTIL_DELETION"></td>
+                </tr>
+                <tr>
+                    <td class="loginInfoGridCheck" translate="HELP.ACCOUNTISSUES.ONE_COMPUTER"></td>
+                    <td class="loginInfoGridCheck" translate="HELP.ACCOUNTISSUES.ONLINE"></td>
+                </tr>
+                <tr>
+                    <td class="loginInfoGridCheck" translate="HELP.ACCOUNTISSUES.BY_YOURSELF"></td>
+                    <td class="loginInfoGridCheck"> {{ 'HELP.ACCOUNTISSUES.BY_YOURSELF' | translate }} <br/><small>OR</small> <br/>{{ 'HELP.ACCOUNTISSUES.WITH_CLASSMATES' | translate }} </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<div class="loginPageFooter" ng-class="{ 'loginPageWide' : vm.loginstate === 'whyregister' || vm.loginstate === 'teachersignup' }">
+    Login provided by: &nbsp; <br/>
+    <a width="135" height="45"
+        href="https://auth0.com/?utm_source=oss&utm_medium=gp&utm_campaign=oss"
+        target="_blank" alt="Single Sign On & Token Based Authentication - Auth0">
+    <img width="135" height="45" vspace="5"
+            alt="JWT Auth for open source projects"
+            src="//cdn.auth0.com/oss/badges/a0-badge-dark.png"/>
+    </a>
+</div>

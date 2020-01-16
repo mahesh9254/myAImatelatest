@@ -1,0 +1,82 @@
+<div class="jumbotron">
+    <h2 class="text-center" translate>TEACHER.RESTRICTIONS.TITLE</h2>
+</div>
+<div ng-if="!isAuthenticated">
+    <div class="alert alert-warning pageheadermsg">
+        <strong translate="ERRORS.NOTLOGGEDIN"></strong>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary" ng-click="vm.authService.login()" translate="APP.LOGIN"></button>
+    </div>
+</div>
+<div ng-if="isAuthenticated && vm.profile.role === 'supervisor'" class="adminpage">
+
+    <div ng-if="!vm || !vm.policy" class="loading"> </div>
+
+    <div ng-repeat="error in vm.errors"
+         class="alert alert-danger alert-dismissible pageheadermsg" role="alert"
+         ng-click="vm.dismissAlert('errors', $index)"
+         id="errors{{error.alertid}}">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong translate="APP.ERROR"></strong> {{ error.message }}<br/>
+        <em ng-if="error.status >= 500"><span translate="ERRORS.IFPERSISTENT"></span> <a ui-sref="help" translate="ERRORS.LETMEKNOW"></a></em>
+    </div>
+    <div ng-repeat="warning in vm.warnings"
+         class="alert alert-warning alert-dismissible pageheadermsg" role="alert"
+         ng-click="vm.dismissAlert('warnings', $index)"
+         id="warnings{{warning.alertid}}">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong translate="APP.WARNING"></strong> {{ warning.message }}
+    </div>
+
+    <div ng-if="vm && vm.policy">
+        <div class="alert alert-info pageheadermsg" translate>TEACHER.RESTRICTIONS.ASK_FOR_CHANGES</div>
+
+        <div class="helpsection">
+            <h4 translate>TEACHER.RESTRICTIONS.CLASS_LIMITS.TITLE</h4>
+
+            <div class="adminrestriction" translate="TEACHER.RESTRICTIONS.CLASS_LIMITS.NUM_USERS" translate-values="{ num : vm.policy.maxUsers }"></div>
+
+            <div class="adminrestriction" ng-if="vm.policy.isManaged && vm.policy.supportedProjectTypes.indexOf('text') >= 0"
+                                          translate="TEACHER.RESTRICTIONS.CLASS_LIMITS.NUM_TEXT_MODELS" translate-values="{ num : vm.policy.maxTextModels }"></div>
+        </div>
+
+        <div class="helpsection">
+            <h4 translate>TEACHER.RESTRICTIONS.PROJECT_LIMITS.TITLE</h4>
+
+            <div class="adminrestriction" translate="TEACHER.RESTRICTIONS.PROJECT_LIMITS.NUM_PROJECTS" translate-values="{ num : vm.policy.maxProjectsPerUser }"></div>
+            <div class="adminrestriction" translate="TEACHER.RESTRICTIONS.PROJECT_LIMITS.TYPES" translate-values="{ types : vm.policy.supportedProjectTypes.join(' or ') }"></div>
+
+            <div class="adminrestriction" ng-if="vm.policy.supportedProjectTypes.indexOf('text') >= 0"
+                 translate="TEACHER.RESTRICTIONS.PROJECT_LIMITS.TRAINING_DATA" translate-values="{ type : 'text', num : vm.policy.textTrainingItemsPerProject }"></div>
+            <div class="adminrestriction" ng-if="vm.policy.supportedProjectTypes.indexOf('numbers') >= 0"
+                 translate="TEACHER.RESTRICTIONS.PROJECT_LIMITS.TRAINING_DATA" translate-values="{ type : 'numbers', num : vm.policy.numberTrainingItemsPerProject }"></div>
+            <div class="adminrestriction" ng-if="vm.policy.supportedProjectTypes.indexOf('images') >= 0"
+                 translate="TEACHER.RESTRICTIONS.PROJECT_LIMITS.TRAINING_DATA" translate-values="{ type : 'images', num : vm.policy.imageTrainingItemsPerProject }"></div>
+            <div class="adminrestriction" ng-if="vm.policy.supportedProjectTypes.indexOf('sounds') >= 0"
+                translate="TEACHER.RESTRICTIONS.PROJECT_LIMITS.TRAINING_DATA" translate-values="{ type : 'sounds', num : vm.policy.soundTrainingItemsPerProject }"></div>
+
+        </div>
+
+        <div class="helpsection">
+            <button class="btn btn-default restrictionedit" translate="APP.EDIT" ng-click="vm.modifyExpiry($event)"></button>
+            <h4 translate>TEACHER.RESTRICTIONS.EXPIRY.TITLE</h4>
+
+            <div class="adminrestriction" ng-if="vm.policy.supportedProjectTypes.indexOf('text') >= 0">
+                <div translate="TEACHER.RESTRICTIONS.EXPIRY.TIME_LIMIT"
+                     translate-values="{ type : 'text', num : vm.policy.textClassifierExpiry }"></div>
+                <div><em translate>TEACHER.RESTRICTIONS.EXPIRY.DONT_WORRY</em></div>
+            </div>
+            <div class="adminrestriction" ng-if="vm.policy.supportedProjectTypes.indexOf('images') >= 0">
+                <div translate="TEACHER.RESTRICTIONS.EXPIRY.TIME_LIMIT"
+                        translate-values="{ type : 'images', num : vm.policy.imageClassifierExpiry }"></div>
+                <div><em translate>TEACHER.RESTRICTIONS.EXPIRY.DONT_WORRY</em></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div ng-if="isAuthenticated && vm.profile.role !== 'supervisor'" class="alert alert-danger pageheadermsg">
+    <strong translate="APP.ERROR"></strong> {{ 'TEACHER.RESTRICTIONS.NOT_AUTHORIZED' | translate }}
+</div>

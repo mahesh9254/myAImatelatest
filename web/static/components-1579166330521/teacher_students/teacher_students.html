@@ -1,0 +1,81 @@
+<div class="jumbotron">
+    <h2 class="text-center" translate>TEACHER.STUDENTMANAGEMENT.TITLE</h2>
+</div>
+<div ng-if="!isAuthenticated">
+    <div class="alert alert-warning pageheadermsg">
+        <strong translate="ERRORS.NOTLOGGEDIN"></strong>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary" ng-click="vm.authService.login()" translate="APP.LOGIN"></button>
+    </div>
+</div>
+<div ng-if="isAuthenticated && vm.profile.role === 'supervisor'" class="adminpage">
+
+    <div ng-if="!vm || !vm.students" class="loading"> </div>
+
+    <div ng-repeat="error in vm.errors"
+            class="alert alert-danger alert-dismissible pageheadermsg" role="alert"
+            ng-click="vm.dismissAlert('errors', $index)"
+            id="errors{{error.alertid}}">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong translate="APP.ERROR"></strong> {{ error.message }}<br/>
+        <em ng-if="error.status >= 500"><span translate="ERRORS.IFPERSISTENT"></span> <a ui-sref="help" translate="ERRORS.LETMEKNOW"></a></em>
+    </div>
+    <div ng-repeat="warning in vm.warnings"
+            class="alert alert-warning alert-dismissible pageheadermsg" role="alert"
+            ng-click="vm.dismissAlert('warnings', $index)"
+            id="warnings{{warning.alertid}}">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong translate="APP.WARNING"></strong> {{ warning.message }}
+    </div>
+
+    <div ng-if="vm && vm.students">
+        <div class="newlabelbuttons">
+            <div class="newlabelbutton" style="margin-right: 1em; clear: initial;"
+                 ng-disabled="!vm || !vm.policy || !vm.policy.maxUsers || !vm.students || vm.students.length === vm.policy.maxUsers"
+                 ng-click="vm.createMultipleUsers($event)">
+                <div class="newlabelicon">+</div>
+                <div class="newlabellabel" translate="TEACHER.STUDENTMANAGEMENT.ADD_MULTIPLE.BUTTON"></div>
+            </div>
+            <div class="newlabelbutton" style="margin-right: 1em; clear: initial;"
+                 ng-click="vm.createUser($event)">
+                <div class="newlabelicon">+</div>
+                <div class="newlabellabel" translate="TEACHER.STUDENTMANAGEMENT.ADD"></div>
+            </div>
+            <div class="alert alert-info pageheadermsg"
+                 style="flex-grow: 1; text-align: center; margin-bottom: 8px;"
+                 ng-if="vm.students && vm.students.length === 0">
+                {{ 'TEACHER.STUDENTMANAGEMENT.CREATE_FIRST_STUDENT' | translate }}
+                <span class="glyphicon glyphicon-arrow-right"></span>
+            </div>
+        </div>
+
+        <table class="studentslist">
+            <tr ng-repeat="student in vm.students" ng-class-even="'even'" ng-class-odd="'odd'">
+                <td class="studentslistname placeholder" ng-if="student.isPlaceholder" colspan=4> {{ student.username }} </td>
+
+                <td class="studentslistname" ng-if="!student.isPlaceholder"> {{ student.username }} </td>
+                <td class="studentslistdetail detail" ng-if="!student.isPlaceholder && student.last_login"> Last login: {{ student.last_login | date : 'EEEE, MMMM d, y  h:mm a' }}  </td>
+                <td class="studentslistdetail" ng-if="!student.isPlaceholder && !student.last_login" translate="TEACHER.STUDENTMANAGEMENT.NOT_LOGGED_IN"> </td>
+                <td class="studentslistactions" ng-if="!student.isPlaceholder">
+                    <button class="btn btn-default" ng-click="vm.resetUserPassword($event, student)" ng-disabled="vm.allStudentPasswordsReset" translate="TEACHER.STUDENTMANAGEMENT.RESET_PASSWORD"></button>
+                    <button class="btn btn-default" ng-click="vm.deleteUser($event, student)" ng-disabled="vm.allStudentPasswordsReset" translate="TEACHER.STUDENTMANAGEMENT.DELETE_STUDENT"></button>
+                </td>
+            </tr>
+            <tr ng-if="vm.students.length > 2">
+                <td colspan=2> </td>
+                <td class="studentslistactions" colspan=2>
+                    <button class="btn btn-default"
+                            ng-click="vm.resetUsersPassword($event)"
+                            ng-disabled="vm.allStudentPasswordsReset"
+                            translate="TEACHER.STUDENTMANAGEMENT.RESET_ALL_PASSWORDS"></button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+
+<div ng-if="isAuthenticated && vm.profile.role !== 'supervisor'" class="alert alert-danger pageheadermsg">
+    <strong translate="APP.ERROR"></strong> {{ 'TEACHER.STUDENTMANAGEMENT.NOT_AUTHORIZED' | translate }}
+</div>
