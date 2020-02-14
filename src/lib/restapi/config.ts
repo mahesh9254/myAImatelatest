@@ -58,7 +58,7 @@ export function setupUI(app: express.Application): void {
 
     app.get('/about', (req, res) => { res.redirect('/#!/about'); });
     app.get('/projects', (req, res) => { res.redirect('/#!/projects'); });
-    app.get('/news', (req, res) => { res.redirect('/#!/news'); });
+    app.get('/buzz', (req, res) => { res.redirect('/#!/buzz'); });
     app.get('/teacher', (req, res) => { res.redirect('/#!/teacher'); });
     app.get('/worksheets', (req, res) => { res.redirect('/#!/worksheets'); });
     app.get('/help', (req, res) => { res.redirect('/#!/help'); });
