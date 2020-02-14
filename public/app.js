@@ -46,8 +46,8 @@
                 url: '/about',
                 templateUrl: 'static/components-<%= VERSION %>/about/about.html'
             })
-            .state('news', {
-                url: '/news',
+            .state('buzz', {
+                url: '/Buzz',
                 templateUrl: 'static/components-<%= VERSION %>/news/news.html'
             })
             .state('help', {
