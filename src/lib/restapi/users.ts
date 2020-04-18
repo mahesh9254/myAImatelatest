@@ -18,7 +18,7 @@ import loggerSetup from '../utils/logger';
 const log = loggerSetup();
 
 
-const VALID_USERNAME = /^[A-Za-z0-9\-_]+$/;
+const VALID_USERNAME = /^[A-Za-z0-9\-_]+$/a;
 
 
 function getStudents(req: Express.Request, res: Express.Response) {
