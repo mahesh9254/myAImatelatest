@@ -1,6 +1,4 @@
 trash
-public/scratchx
-public/scratch3
 node_modules
 coverage
 logs/*.log
@@ -8,7 +6,6 @@ logs/*.log.*
 dist
 .vscode
 public/bower_components
-web
 manifest-dev.yml
 manifest-prod-ussouth.yml
 manifest-prod-eude.yml

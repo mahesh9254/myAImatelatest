@@ -3,7 +3,6 @@ coverage
 sql
 test
 logs/ml*
-public
 archive
 .git
 .github
@@ -16,6 +15,4 @@ dist/tests
 custom_typings
 ops
 .vscode
-web/scratch3
-web/scratchx
 dist/ops
