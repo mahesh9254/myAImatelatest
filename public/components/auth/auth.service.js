@@ -102,16 +102,7 @@
                     }
                 }
             }
-        }
-
-
-        function scheduleTokenRenewal(timeToRefreshMs) {
-            // var refreshTime = new Date(Date.now() + timeToRefreshMs);
-            // console.log('scheduling token renewal in ' +
-            //             Math.round(timeToRefreshMs / 1000 / 60) + ' minutes (' +
-            //             refreshTime.toString());
-            nextRefreshTimer = setTimeout(renewLogin, timeToRefreshMs);
-        }
+        }     
 
 
         function renewLogin() {
@@ -139,20 +130,6 @@
             }
             else {
                 console.log('Unexpected call to renewLogin');
-            }
-        }
-
-
-        function login() {
-            if (lock) {
-                lock.show({
-                    languageDictionary : {
-                        title: 'Log in to ML for Kids'
-                    }
-                });
-            }
-            else {
-                console.log('Unexpected call to login');
             }
         }
 

@@ -1,0 +1,40 @@
+.container-wrapper {
+    background-color: #fff;
+}
+nav.gn-menu-wrapper {
+    /* border: 1px solid #c6d0da; */
+    width: 240px;
+    /*border-right: 1px solid #c6d0da;
+    border-left: 1px solid #c6d0da;*/
+    float: left;
+}
+
+.view-inserted {
+    float: left;
+}
+ul.gn-menu li a {
+    color: #777;
+    text-decoration: none;
+    font-size: 14px;
+    font-family: 'Glyphicons Halflings';
+}
+
+ul.gn-menu li a:hover {
+    color: #333;
+}
+
+.gn-menu li a.glyphicon::before {
+    padding-right: 0.5em;
+}
+
+ul.gn-menu li {
+    border-bottom: 1px solid #c6d0da;
+    padding-left: 1em;
+    cursor: pointer;
+    border-right: 1px solid #c6d0da;
+}
+
+.chart-style {
+    padding-right: 0.5em;
+    font-size: 14px;
+}
